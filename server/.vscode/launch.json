@@ -14,17 +14,10 @@
             "type": "node"
         },
         {
-            "console": "integratedTerminal",
-            "internalConsoleOptions": "neverOpen",
+            "command": "npm run dev",
             "name": "Watch Server",
-            "program": "${workspaceFolder}/index.js",
             "request": "launch",
-            "restart": true,
-            "runtimeExecutable": "nodemon",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "type": "node"
+            "type": "node-terminal"
         }
     ]
 }
