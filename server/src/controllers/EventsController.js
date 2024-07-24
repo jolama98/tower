@@ -69,15 +69,4 @@ export class EventsController extends BaseController {
     }
   }
 
-  // async archiveAlbumById(request, response, next) {
-  //   try {
-  //     const user = request.userInfo
-  //     const albumId = request.params.albumId
-  //     const message = await albumsService.archiveAlbumById(albumId, user.id)
-  //     response.send(message)
-  //   } catch (error) {
-  //     next(error)
-  //   }
-  // }
-
 }

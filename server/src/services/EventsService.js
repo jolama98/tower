@@ -27,18 +27,6 @@ class EventsService {
     return `${eventToArchive.name} was archived successfully`
   }
 
-  // async archiveAlbumById(albumId, userId) {
-  //   const albumToArchive = await this.getAlbumById(albumId)
-  //   if (userId != albumToArchive.creatorId) throw new Forbidden(`You shall not pass!, this is not yours!`)
-
-  //   // await albumToArchive.deleteOne()
-  //   // return `Deleted ${albumToArchive.title}`
-  //   // albumToArchive.archived = true
-  //   albumToArchive.archived = !albumToArchive.archived // flips the bool
-  //   await albumToArchive.save()
-  //   return `${albumToArchive.title} was archived`
-  // }
-
 }
 
 
