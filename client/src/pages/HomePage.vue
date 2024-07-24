@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { AppState } from '../AppState.js';
 import Pop from '../utils/Pop.js';
 import { eventsService } from '../services/EventsService.js';
@@ -7,7 +7,9 @@ import { logger } from '../utils/Logger.js';
 import CreateEventForm from '../components/CreateEventForm.vue';
 
 
-const events = computed(() => AppState.event)
+const categoryFilter = ref('all')
+
+const events = computed(() => AppState.events)
 onMounted(() => { getAllEvents() })
 
 async function getAllEvents() {
@@ -19,7 +21,7 @@ async function getAllEvents() {
   }
 }
 
-
+const categories = ['all', 'games', 'animals', 'aesthetics', 'misc']
 
 </script>
 
@@ -35,20 +37,20 @@ async function getAllEvents() {
         </div>
       </div>
     </section>
+    <!-- add even / search -->
     <section class="container">
       <div class="row">
         <div class="d-flex justify-content-around pb-3">
           <div class="col-md-4">
             <div role="button" class="card d-flex justify-content-center">
               <div class=" card-body">
-                <button class="btn btn-danger" data-bs-target="#create-event-modal" data-bs-toggle="modal">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                   Add event
                 </button>
                 <h5 class="card-title">Start an event to invite your friends</h5>
                 <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
                   card's
                   content.</p>
-
               </div>
             </div>
           </div>
@@ -65,9 +67,19 @@ async function getAllEvents() {
             </div>
           </div>
         </div>
-
       </div>
     </section>
+
+    <!-- categoryFilter btn -->
+    <section>
+      <div class="col-4" v-for="category in categories" :key="category">
+        <button @click="categoryFilter = category"
+          class=" w-100 text-capitalize btn btn-success p-4 rounded text-center text-light fw-bold">
+          {{ category }}
+        </button>
+      </div>
+    </section>
+    <!-- EventCard  -->
     <section>
       <div class="row">
         <div class="col-md-4" v-for="event in events" :key="event.id">
@@ -77,9 +89,8 @@ async function getAllEvents() {
     </section>
   </div>
 
-  <ModalWrapper id="create-event-modal">
-    <CreateEventForm />
-  </ModalWrapper>
+
+  <CreateEventForm />
 </template>
 
 <style scoped lang="scss">
