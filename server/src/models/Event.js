@@ -1,10 +1,9 @@
 import { Schema } from "mongoose";
 
 
-
-
-
 export const EventSchema = new Schema({
+  // id: {}
+  // creatorId: { type: Schema.ObjectId, ref: 'Account', required: true },
   creatorId: { type: Schema.ObjectId, ref: 'Account', required: true },
   name: {
     type: String, minLength: 3, maxLength: 50, required: true, default: 'Same'
@@ -13,9 +12,9 @@ export const EventSchema = new Schema({
   location: { type: String, minLength: 1, maxLength: 500, required: true },
   capacity: { type: Number, minLength: 1, maxLength: 5000, required: true },
   startDate: { type: Date, required: true },
-  isCanceled: { type: Boolean, required: true, default: false }
-  // category: { type: String, enum: ['aesthetics', 'food', 'games', 'animals', 'misc'], required: true, default: 'misc', lowercase: true }
-})
+  isCanceled: { type: Boolean, required: true, default: false },
+  type: { type: String, enum: ['concert', 'convention', 'sport', 'digital'], required: true, default: 'sport', lowercase: true },
+}, { timestamps: true, toJSON: { virtuals: true } })
 
 EventSchema.virtual('creator', {
   localField: 'creatorId',
@@ -23,3 +22,4 @@ EventSchema.virtual('creator', {
   foreignField: '_id',
   justOne: true
 })
+
