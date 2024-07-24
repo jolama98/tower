@@ -7,7 +7,6 @@ defineProps({ event: Event })
 
 
 <template>
-  <!-- <router-link :to="{ name: 'Profile', params: { profileId: postProp.creatorId } }" -->
   <router-link :to="{ name: 'Event', params: { eventId: event.id } }">
     <div class="card" style="width: 18rem;">
       <img :src="event.coverImg" class="card-img-top" alt="...">

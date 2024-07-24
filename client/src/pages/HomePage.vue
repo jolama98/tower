@@ -4,6 +4,7 @@ import { AppState } from '../AppState.js';
 import Pop from '../utils/Pop.js';
 import { eventsService } from '../services/EventsService.js';
 import { logger } from '../utils/Logger.js';
+import CreateEventForm from '../components/CreateEventForm.vue';
 
 
 const events = computed(() => AppState.event)
@@ -24,7 +25,7 @@ async function getAllEvents() {
 
 <template>
   <div class="container">
-    <section class="row">
+    <section class="row pb-3">
       <div class="col-12 header-img">
         <div class="text-light">
           <p class="">Event management for people, by people</p>
@@ -36,8 +37,35 @@ async function getAllEvents() {
     </section>
     <section class="container">
       <div class="row">
-        <div class="col-md-5"></div>
-        <div class="col-md-5"></div>
+        <div class="d-flex justify-content-around pb-3">
+          <div class="col-md-4">
+            <div role="button" class="card d-flex justify-content-center">
+              <div class=" card-body">
+                <button class="btn btn-danger" data-bs-target="#create-event-modal" data-bs-toggle="modal">
+                  Add event
+                </button>
+                <h5 class="card-title">Start an event to invite your friends</h5>
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                  card's
+                  content.</p>
+
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card d-flex justify-content-center">
+              <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
+                  content.</p>
+                <a href="#" class="card-link">Card link</a>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </section>
     <section>
@@ -48,6 +76,10 @@ async function getAllEvents() {
       </div>
     </section>
   </div>
+
+  <ModalWrapper id="create-event-modal">
+    <CreateEventForm />
+  </ModalWrapper>
 </template>
 
 <style scoped lang="scss">
