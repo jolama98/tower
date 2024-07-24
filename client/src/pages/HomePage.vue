@@ -9,7 +9,19 @@ import CreateEventForm from '../components/CreateEventForm.vue';
 
 const categoryFilter = ref('all')
 
-const events = computed(() => AppState.events)
+const events = computed(() => {
+  if (categoryFilter.value == 'all') {
+    return AppState.events
+  }
+  return AppState.events.filter(event => event.type == categoryFilter.value)
+})
+
+const categories = ['all', 'concert', 'convention', 'sport', 'digital']
+
+
+// const event = computed(() => AppState.events)
+
+
 onMounted(() => { getAllEvents() })
 
 async function getAllEvents() {
@@ -21,12 +33,11 @@ async function getAllEvents() {
   }
 }
 
-const categories = ['all', 'games', 'animals', 'aesthetics', 'misc']
 
 </script>
 
 <template>
-  <div class="container">
+  <div class="container-fluid">
     <section class="row pb-3">
       <div class="col-12 header-img">
         <div class="text-light">
@@ -38,9 +49,15 @@ const categories = ['all', 'games', 'animals', 'aesthetics', 'misc']
       </div>
     </section>
     <!-- add even / search -->
+
     <section class="container">
       <div class="row">
-        <div class="d-flex justify-content-around pb-3">
+        <div>
+          <p class="fs-2 fw-bold m-1">
+            How it works
+          </p>
+        </div>
+        <div class="d-flex justify-content-around ">
           <div class="col-md-4">
             <div role="button" class="card d-flex justify-content-center">
               <div class=" card-body">
@@ -71,14 +88,22 @@ const categories = ['all', 'games', 'animals', 'aesthetics', 'misc']
     </section>
 
     <!-- categoryFilter btn -->
-    <section>
-      <div class="col-4" v-for="category in categories" :key="category">
-        <button @click="categoryFilter = category"
-          class=" w-100 text-capitalize btn btn-success p-4 rounded text-center text-light fw-bold">
-          {{ category }}
-        </button>
+    <section class="pb-5">
+      <div class="row">
+        <div class="m-4 d-flex justify-content-start">
+          <p class="fs-2 fw-bold m-1">Explore top categories</p>
+        </div>
+        <div class="d-flex justify-content-around">
+          <div class="col-md-2 p-2" v-for="category in categories" :key="category">
+            <button @click="categoryFilter = category"
+              class=" w-100 text-capitalize btn btn-secondary p-4 rounded text-center text-light fw-bold">
+              {{ category }}
+            </button>
+          </div>
+        </div>
       </div>
     </section>
+
     <!-- EventCard  -->
     <section>
       <div class="row">
@@ -88,7 +113,6 @@ const categories = ['all', 'games', 'animals', 'aesthetics', 'misc']
       </div>
     </section>
   </div>
-
 
   <CreateEventForm />
 </template>

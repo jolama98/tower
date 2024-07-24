@@ -10,14 +10,8 @@ export class Event {
     this.startDate = data.startDate
     this.isCanceled = data.isCanceled
     this.capacity = data.capacity
+    this.creator = data.creator
+    this.type = data.type
   }
+
 }
-
-
-// "name": "{{eventName}}",
-//   "description" : "{{eventDescription}}",
-//     "coverImg": "{{eventCoverImg}}",
-//       "location": "{{eventLocation}}",
-//         "capacity": { { eventCapacity } },
-// "startDate": "{{eventStartDate}}",
-//   "type": "{{eventType}}"
