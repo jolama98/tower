@@ -5,17 +5,18 @@ class EventsService {
 
   async createEvent(eventData) {
     const event = await dbContext.Events.create(eventData)
-    await event.populate('creator')
+    await event.populate('creator ticketCount')
     return event
   }
 
   async getAllEvents() {
-    const events = await dbContext.Events.find().sort('-createdAr').populate('creator')
+    const events = await dbContext.Events.find().sort('-createdAr').populate('creator').populate('ticketCount')
+
     return events
   }
 
   async getEventById(eventId) {
-    const event = await dbContext.Events.findById(eventId).populate('creator')
+    const event = await dbContext.Events.findById(eventId).populate('creator ticketCount')
     if (event == null) throw new Error(`No event with id ${eventId}`)
     return event
   }
