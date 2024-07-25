@@ -10,7 +10,7 @@ export class EventsController extends BaseController {
       .get('', this.getAllEvents)
       .use(Auth0Provider.getAuthorizedUserInfo)
       .post('', this.createEvent)
-      // .put('/:eventId', this.editEvent);
+      .put('/:eventId', this.editEvent)
       .delete('/:eventId', this.archiveEventById)
   }
 
@@ -46,17 +46,17 @@ export class EventsController extends BaseController {
     }
   }
 
-  // async editEvent(request, response, next) {
-  //   try {
-  //     const eventId = request.params.eventId;
-  //     const updatedData = request.body;
-  //     const user = request.userInfo;
-  //     const event = await eventsService.editEvent(eventId, updatedData, user.id);
-  //     response.send(event);
-  //   } catch (error) {
-  //     next(error);
-  //   }
-  // }
+  async editEvent(request, response, next) {
+    try {
+      const eventId = request.params.eventId
+      const eventUpData = request.body
+      const user = request.userInfo
+      const event = await eventsService.editEvent(eventId, user.id, eventUpData)
+      response.send(event)
+    } catch (error) {
+      next(error);
+    }
+  }
 
   async archiveEventById(request, response, next) {
     try {

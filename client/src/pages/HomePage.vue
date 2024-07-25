@@ -19,7 +19,7 @@ const events = computed(() => {
 const categories = ['all', 'concert', 'convention', 'sport', 'digital']
 
 
-// const event = computed(() => AppState.events)
+const event = computed(() => AppState.events)
 
 
 onMounted(() => { getAllEvents() })

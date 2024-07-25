@@ -1,15 +1,25 @@
 <script setup>
 import { RouterLink } from 'vue-router';
 import { Event } from '../models/Event.js';
-
+import { eventsService } from '../services/EventsService.js';
+import { logger } from '../utils/Logger.js';
+import { computed } from 'vue';
+import { AppState } from '../AppState.js';
 defineProps({ event: Event })
-</script>
 
+
+
+function setActiveEvent(event) {
+  eventsService.setActiveEvent(event)
+  logger.log(eventsService.setActiveEvent)
+}
+
+</script>
 
 <template>
   <div class="card shadow-lg p-3 mb-5 bg-body-tertiary rounded">
     <router-link :to="{ name: 'Event', params: { eventId: event.id } }">
-      <img :src="event.coverImg" class="card-img-top" alt="...">
+      <img @click="setActiveEvent()" :src="event.coverImg" class="card-img-top" alt="...">
     </router-link>
     <div class="card-body">
       <h5 class="card-title">{{ event.name }}</h5>

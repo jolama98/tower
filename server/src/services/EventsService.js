@@ -2,6 +2,7 @@ import { dbContext } from "../db/DbContext.js"
 import { Forbidden } from "../utils/Errors.js"
 
 class EventsService {
+
   async createEvent(eventData) {
     const event = await dbContext.Events.create(eventData)
     await event.populate('creator')
@@ -18,6 +19,17 @@ class EventsService {
     if (event == null) throw new Error(`No event with id ${eventId}`)
     return event
   }
+
+
+  async editEvent(eventId, userId, eventUpData) {
+    const originalEvent = await this.getEventById(eventId)
+    if (userId != originalEvent.creatorId) throw new Forbidden('YOU CAN NOT UPDATE A EVENT YOU DID NOT CREATE, BUD')
+    originalEvent.description = eventUpData.description || eventUpData.description
+    originalEvent.name = eventUpData.name || eventUpData.name
+    await originalEvent.save()
+    return originalEvent
+  }
+
   async archiveEventById(eventId, userId) {
     const eventToArchive = await this.getEventById(eventId)
     if (userId != eventToArchive.creatorId) throw new Forbidden(`No way man`)
