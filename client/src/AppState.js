@@ -1,5 +1,6 @@
 import { reactive } from 'vue'
 import { Event } from './models/Event.js'
+import { EventGoer } from './models/EventGoer.js'
 
 // NOTE AppState is a reactive object to contain app level data
 export const AppState = reactive({
@@ -9,6 +10,8 @@ export const AppState = reactive({
   account: null,
   /** @type {Event[]} */
   events: [],
+  /** @type {EventGoer[]} */
+  eventGoers: [],
   /** @type {Event} */
   activeEvent: null
 })

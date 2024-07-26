@@ -12,11 +12,15 @@ class TicketService {
   }
 
   async getTicketByEventId(accountId) {
-    //                                              {accountId: '668f0c3398d7a494b5eff57e'}
-    // FIXME make sure you are populating the correct virtual. This test expects profile information to be attahced to the request (profile or event)
-    const eventTicket = await dbContext.Ticket.find({ accountId }).populate('profile')
+    const eventTicket = await dbContext.Ticket.find({ accountId }).populate('event')
     return eventTicket
   }
+
+  async getEventTickets(eventId) {
+    const tickets = await dbContext.Ticket.find({ eventId: eventId }).populate('profile')
+    return tickets
+  }
+
 }
 
 export const ticketService = new TicketService();

@@ -7,10 +7,11 @@ import Pop from '../utils/Pop.js';
 import { ticketService } from '../services/TicketService.js'
 import { eventsService } from '../services/EventsService.js';
 import { logger } from '../utils/Logger.js';
+import { Account } from '../models/Account.js';
 
 
 const route = useRoute()
-
+const account = computed(() => AppState.account)
 const event = computed(() => AppState.activeEvent)
 
 // TODO reference isAlbumMember from postIt to see if you are attending the event
@@ -22,10 +23,6 @@ onMounted(() => {
 })
 
 async function cancelEvent(eventId) {
-
-  // FIXME don't change appstate outside of a service
-  // you might want to do this, but only AFTER the network request
-  // FIXME add method to events service that will fire off your delete request
   try {
     const whatIPicked = await Pop.confirm("???")
     if (whatIPicked == false) {
@@ -42,6 +39,7 @@ async function cancelEvent(eventId) {
 
 async function getEventById() {
   try {
+
     await eventsService.getEventById(route.params.eventId)
   } catch (error) {
     Pop.toast("Could not get Event", 'error', 'bottom-start')
@@ -49,6 +47,19 @@ async function getEventById() {
   }
 }
 
+
+// < !--TODO add @click that will call a function to create a ticket, reference createAlbumMember from postIt, make sure it works in the backend first-- >
+//                   < !--TODO disable or hide this button if the event is canceled OR sold out-- >
+async function getTicket() {
+  try {
+    const eventData = { eventId: route.params.eventId }
+    await ticketService.getTicket(eventData)
+    Pop.toast("Got Ticket")
+  } catch (error) {
+    Pop.error(error)
+    logger.error(error)
+  }
+}
 </script>
 
 <template>
@@ -72,15 +83,14 @@ async function getEventById() {
       <img :src="event.coverImg" class="img-fluid" alt="">
       <p v-if="event.isCanceled">Canceled</p>
       <section>
-
         <div class="row">
           <div class="col-md-7 p-4">
             <div class="card w-75 mb-3">
               <div class="d-flex justify-content-end">
-                <p role="button" class="m-1 btn btn-outline-secondary" data-bs-toggle="modal"
-                  data-bs-target="#exampleModal">
+                <button v-if="account?.id == event.creatorId" role="button" class="m-1 btn btn-outline-secondary"
+                  data-bs-toggle="modal" data-bs-target="#exampleModal">
                   ...
-                </p>
+                </button>
               </div>
               <div class="card-body">
                 <p class="fs-2">{{ event.name }}</p>
@@ -103,18 +113,20 @@ async function getEventById() {
                 <p class="fs-4 fw-bold">Interested in going?</p>
                 <p>Grab a ticket!</p>
                 <div>
-                  <!-- TODO add @click that will call a function to create a ticket, reference createAlbumMember from postIt, make sure it works in the backend first -->
-                  <!-- TODO disable or hide this button if the event is canceled OR sold out -->
-                  <button class="btn btn-primary">Attend</button>
+                  <button :disabled="event.capacity == event.ticketCount" @click="getTicket()"
+                    class="btn btn-primary">Attend</button>
                 </div>
               </div>
             </div>
             <div class="d-flex justify-content-end pb-5 mb-3">
-              <p>{{ event.capacity }} spots left</p>
+              <p> {{ event.capacity - event.ticketCount }} spots
+                left
+              </p>
+
             </div>
 
-            <div class="card mb-3 ">
-              <div class="card-body">
+            <div class=" card mb-3 ">
+              <div class=" card-body">
                 <p class="fs-4 fw-bold">Attendees</p>
                 <div class="pb-2">
                   <img

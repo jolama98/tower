@@ -13,7 +13,6 @@ class EventsService {
 
   async createEvent(eventData) {
     const response = await api.post('api/events', eventData)
-    logger.log('✅🎃📡', response.data)
     const newEvent = new Event(response.data)
     AppState.events.unshift(newEvent)
     return newEvent
@@ -22,7 +21,7 @@ class EventsService {
   async getEventById(eventId) {
     AppState.activeEvent = null
     const response = await api.get(`api/events/${eventId}`)
-    logger.log('🎃📡🍔', response.data)
+
     const event = new Event(response.data)
     AppState.activeEvent = event
   }
@@ -30,7 +29,7 @@ class EventsService {
 
   async getAllEvents() {
     const response = await api.get('api/events')
-    logger.log('🎃💴📡', response.data)
+
     const events = response.data.map(eventData => new Event(eventData))
     AppState.events = events
   }
@@ -38,7 +37,6 @@ class EventsService {
 
   async cancelEvent(eventId) {
     const response = await api.delete(`api/events/${eventId}`)
-    logger.log(response.data)
     const eventCancel = AppState.activeEvent.isCanceled
     AppState.activeEvent.isCanceled = true
 
