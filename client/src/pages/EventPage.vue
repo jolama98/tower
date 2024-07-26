@@ -4,38 +4,84 @@ import { Event } from '../models/Event.js';
 import { useRoute } from 'vue-router';
 import { AppState } from '../AppState.js';
 import Pop from '../utils/Pop.js';
+import { ticketService } from '../services/TicketService.js'
 import { eventsService } from '../services/EventsService.js';
 import { logger } from '../utils/Logger.js';
+
 
 const route = useRoute()
 
 const event = computed(() => AppState.activeEvent)
+
+// TODO reference isAlbumMember from postIt to see if you are attending the event
+
 defineProps({ event: Event })
 
 onMounted(() => {
   getEventById()
 })
 
+async function cancelEvent(eventId) {
+
+  // FIXME don't change appstate outside of a service
+  // you might want to do this, but only AFTER the network request
+  // FIXME add method to events service that will fire off your delete request
+  try {
+    const whatIPicked = await Pop.confirm("???")
+    if (whatIPicked == false) {
+      Pop.toast("action canceled successfully 👺", 'info', 'center')
+      return
+    }
+    await eventsService.cancelEvent(eventId)
+    Pop.success('Event canceled successfully')
+  } catch (error) {
+    Pop.error(error)
+
+  }
+}
 
 async function getEventById() {
   try {
-
     await eventsService.getEventById(route.params.eventId)
   } catch (error) {
     Pop.toast("Could not get Event", 'error', 'bottom-start')
     logger.error(error)
   }
 }
+
 </script>
 
 <template>
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Cancel Event? </h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body d-flex justify-content-around">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button @click="cancelEvent(event.id)" type="button" data-bs-dismiss="modal" class="btn btn-primary">Cancel
+            Event</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="container-fluid">
     <section v-if="event" class="row p-4  ">
       <img :src="event.coverImg" class="img-fluid" alt="">
+      <p v-if="event.isCanceled">Canceled</p>
       <section>
+
         <div class="row">
           <div class="col-md-7 p-4">
             <div class="card w-75 mb-3">
+              <div class="d-flex justify-content-end">
+                <p role="button" class="m-1 btn btn-outline-secondary" data-bs-toggle="modal"
+                  data-bs-target="#exampleModal">
+                  ...
+                </p>
+              </div>
               <div class="card-body">
                 <p class="fs-2">{{ event.name }}</p>
                 <p>{{ event.type }}</p>
@@ -57,12 +103,14 @@ async function getEventById() {
                 <p class="fs-4 fw-bold">Interested in going?</p>
                 <p>Grab a ticket!</p>
                 <div>
+                  <!-- TODO add @click that will call a function to create a ticket, reference createAlbumMember from postIt, make sure it works in the backend first -->
+                  <!-- TODO disable or hide this button if the event is canceled OR sold out -->
                   <button class="btn btn-primary">Attend</button>
                 </div>
               </div>
             </div>
             <div class="d-flex justify-content-end pb-5 mb-3">
-              <p>2 spots left</p>
+              <p>{{ event.capacity }} spots left</p>
             </div>
 
             <div class="card mb-3 ">
@@ -107,3 +155,4 @@ img {
   border-radius: 50%;
 }
 </style>
+

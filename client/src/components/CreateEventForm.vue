@@ -9,13 +9,15 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter()
 
+
 const eventData = ref({
   name: '',
   location: '',
   capacity: '',
   startDate: '',
   coverImg: '',
-  type: ''
+  type: '',
+  description: ''
 })
 
 function resetFrom() {
@@ -25,7 +27,8 @@ function resetFrom() {
     capacity: '',
     startDate: '',
     coverImg: '',
-    type: ''
+    type: '',
+    description: ''
   }
 }
 async function createEvent() {
@@ -112,7 +115,9 @@ async function createEvent() {
               </div>
               <div class="mb-3">
                 <label for="Description" class="form-label">Event Description</label>
-                <textarea minlength="15" maxlength="1000" required class="form-control" id="Description" rows="3">
+
+                <textarea v-model="eventData.description" minlength="15" maxlength="1000" required class="form-control"
+                  id="Description" rows="3">
         </textarea>
 
               </div>

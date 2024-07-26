@@ -2,12 +2,8 @@ import { Schema } from "mongoose";
 
 
 export const EventSchema = new Schema({
-  // id: {}
-  // creatorId: { type: Schema.ObjectId, ref: 'Account', required: true },
   creatorId: { type: Schema.ObjectId, ref: 'Account', required: true },
-  name: {
-    type: String, minLength: 3, maxLength: 50, required: true, default: 'Same'
-  },
+  name: { type: String, minLength: 3, maxLength: 50, required: true, default: 'Same' },
   description: { type: String, minLength: 15, maxLength: 1000, required: true, default: 'Party with the boys!!!' }, coverImg: { type: String, maxLength: 1000, required: true },
   location: { type: String, minLength: 1, maxLength: 500, required: true },
   capacity: { type: Number, minLength: 1, maxLength: 5000, required: true },
@@ -25,7 +21,7 @@ EventSchema.virtual('creator', {
 
 EventSchema.virtual('ticketCount', {
   localField: '_id',
-  ref: 'Account',
+  ref: 'Ticket',
   foreignField: 'eventId',
   count: true
 })

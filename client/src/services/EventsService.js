@@ -11,8 +11,6 @@ class EventsService {
     AppState.activeEvent = event
   }
 
-
-
   async createEvent(eventData) {
     const response = await api.post('api/events', eventData)
     logger.log('✅🎃📡', response.data)
@@ -35,6 +33,16 @@ class EventsService {
     logger.log('🎃💴📡', response.data)
     const events = response.data.map(eventData => new Event(eventData))
     AppState.events = events
+  }
+
+
+  async cancelEvent(eventId) {
+    const response = await api.delete(`api/events/${eventId}`)
+    logger.log(response.data)
+    const eventCancel = AppState.activeEvent.isCanceled
+    AppState.activeEvent.isCanceled = true
+
+    // AppState.accountAlbums.splice(albumMemberIndexToRemove, 1)
   }
 
 }

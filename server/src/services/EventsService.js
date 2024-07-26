@@ -33,8 +33,7 @@ class EventsService {
 
   async archiveEventById(eventId, userId) {
     const eventToArchive = await this.getEventById(eventId)
-    if (userId != eventToArchive.creatorId) throw new Forbidden(`No way man`)
-
+    if (userId == eventToArchive.creatorId) throw new Forbidden('No way man')
     eventToArchive.isCanceled = !eventToArchive.isCanceled
     await eventToArchive.save()
     return `${eventToArchive.name} was archived successfully`
