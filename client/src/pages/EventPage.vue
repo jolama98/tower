@@ -7,12 +7,17 @@ import Pop from '../utils/Pop.js';
 import { ticketService } from '../services/TicketService.js'
 import { eventsService } from '../services/EventsService.js';
 import { logger } from '../utils/Logger.js';
-import { Account } from '../models/Account.js';
-
+import { TicketEvent } from '../models/EventGoer.js';
 
 const route = useRoute()
 const account = computed(() => AppState.account)
 const event = computed(() => AppState.activeEvent)
+const eventTicketHolderProfiles = computed(() => AppState.eventTicketHolderProfiles)
+
+const eventGoerProfile = computed(() => AppState.eventTicketHolderProfiles.find(bcw => bcw.accountId == AppState.account.id))
+
+// const isAMember = computed(() => AppState.albumProfiles.find(amp => amp.accountId == AppState.account.id))
+
 
 // TODO reference isAlbumMember from postIt to see if you are attending the event
 
@@ -20,6 +25,7 @@ defineProps({ event: Event })
 
 onMounted(() => {
   getEventById()
+  getEventGoers()
 })
 
 async function cancelEvent(eventId) {
@@ -37,6 +43,15 @@ async function cancelEvent(eventId) {
   }
 }
 
+
+async function getEventGoers() {
+  try {
+    await ticketService.getEventGoers(route.params.eventId)
+  } catch (error) {
+    Pop.error(error)
+  }
+}
+
 async function getEventById() {
   try {
 
@@ -47,9 +62,6 @@ async function getEventById() {
   }
 }
 
-
-// < !--TODO add @click that will call a function to create a ticket, reference createAlbumMember from postIt, make sure it works in the backend first-- >
-//                   < !--TODO disable or hide this button if the event is canceled OR sold out-- >
 async function getTicket() {
   try {
     const eventData = { eventId: route.params.eventId }
@@ -129,39 +141,42 @@ async function getTicket() {
               }}</samp> spots
                 left
               </p>
-
             </div>
 
             <div class=" card mb-3 ">
               <div class=" card-body">
                 <p class="fs-4 fw-bold">Attendees</p>
-                <div class="pb-2">
-                  <img
-                    src="https://images.unsplash.com/photo-1517242027094-631f8c218a0f?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fGxlZ28lMjAlMjBhdmF0YXJ8ZW58MHx8MHx8fDA%3D"
-                    class="avatar" alt="">
+
+                <div class="col-4" v-for="eventGoer in eventTicketHolderProfiles" :key="eventGoer.id">
+                  <img class="pb-1 avatar" :src="eventGoer.profile.picture" alt="">
                 </div>
-                <div class="pb-2">
-                  <img
-                    src="https://images.unsplash.com/photo-1517242027094-631f8c218a0f?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fGxlZ28lMjAlMjBhdmF0YXJ8ZW58MHx8MHx8fDA%3D"
-                    class="avatar" alt="">
-                </div>
-                <div class="pb-2">
-                  <img
-                    src="https://images.unsplash.com/photo-1517242027094-631f8c218a0f?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fGxlZ28lMjAlMjBhdmF0YXJ8ZW58MHx8MHx8fDA%3D"
-                    class="avatar" alt="">
-                </div>
+
+                <!-- <div class="col-4" v-for="albumMember in albumMemberProfiles" :key="albumMember.id">
+              <img class="img-fluid"  :src="albumMember.profile.picture" alt="it's a face">
+            </div> -->
+
+
               </div>
             </div>
+
           </div>
 
         </div>
       </section>
+
     </section>
   </div>
 </template>
 
 
 <style lang="scss" scoped>
+.avatar {
+  vertical-align: middle;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
 img {
   object-fit: cover;
   height: 40vh;

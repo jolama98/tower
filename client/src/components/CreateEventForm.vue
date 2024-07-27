@@ -47,27 +47,19 @@ async function createEvent() {
 
 
 </script>
-
-
 <template>
   <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Create New Event</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <form @submit.prevent="createEvent">
-            <h1>Create New Event</h1>
             <div class="row">
-              <div class="col-md-5">
-                <div class="mb-3">
-                  ima preview here
-                </div>
-              </div>
-              <div class="col-md-7">
+              <div class="col-md-12">
                 <div class="mb-3">
                   <label for="Event-title">Title</label>
                   <input v-model="eventData.name" class="form-control" type="text" id="Event-title" name="Event-title"
@@ -89,9 +81,7 @@ async function createEvent() {
                     <option value="digital">Digital</option>
                   </select>
                 </div>
-
-                <div class="row
-          ">
+                <div class="row">
                   <div class="col-md-7">
                     <div class="mb-3">
                       <label for="event-date">Start Date</label>
@@ -122,8 +112,10 @@ async function createEvent() {
 
               </div>
             </div>
-            <button type="button" @click="resetFrom()" class="btn btn-danger">clear</button>
-            <button class="btn btn-primary">Create Event</button>
+            <div class="d-flex justify-content-between">
+              <button type="button" @click="resetFrom()" class="btn btn-danger">clear</button>
+              <button class="btn btn-primary">Create Event</button>
+            </div>
           </form>
         </div>
       </div>
