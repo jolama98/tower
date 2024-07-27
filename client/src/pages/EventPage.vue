@@ -72,7 +72,8 @@ async function getTicket() {
         </div>
         <div class="modal-body d-flex justify-content-around">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button @click="cancelEvent(event.id)" type="button" data-bs-dismiss="modal" class="btn btn-primary">Cancel
+          <button :disabled="event?.isCanceled" @click="cancelEvent(event.id)" type="button" data-bs-dismiss="modal"
+            class="btn btn-primary">Cancel
             Event</button>
         </div>
       </div>
@@ -81,7 +82,9 @@ async function getTicket() {
   <div class="container-fluid">
     <section v-if="event" class="row p-4  ">
       <img :src="event.coverImg" class="img-fluid" alt="">
-      <p v-if="event.isCanceled">Canceled</p>
+      <div>
+        <p v-if="event.isCanceled" class="text-dark bg-danger-subtle d-flex  justify-content-center fs-2">Canceled!</p>
+      </div>
       <section>
         <div class="row">
           <div class="col-md-7 p-4">

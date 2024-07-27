@@ -39,10 +39,7 @@ class EventsService {
     const response = await api.delete(`api/events/${eventId}`)
     const eventCancel = AppState.activeEvent.isCanceled
     AppState.activeEvent.isCanceled = true
-
-    // AppState.accountAlbums.splice(albumMemberIndexToRemove, 1)
   }
-
 }
 
 
