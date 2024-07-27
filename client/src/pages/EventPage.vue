@@ -113,13 +113,17 @@ async function getTicket() {
                 <p class="fs-4 fw-bold">Interested in going?</p>
                 <p>Grab a ticket!</p>
                 <div>
-                  <button :disabled="event.capacity == event.ticketCount" @click="getTicket()"
-                    class="btn btn-primary">Attend</button>
+                  <button :disabled="event.capacity == event.ticketCount" @click="getTicket()" class="btn btn-primary"
+                    v-show="event.capacity != event.ticketCount">Get A Ticket!</button>
+                  <button :disabled="event.capacity == event.ticketCount" class=" btn btn-subtle"
+                    v-show="event.capacity == event.ticketCount">Sold Out</button>
                 </div>
               </div>
             </div>
             <div class="d-flex justify-content-end pb-5 mb-3">
-              <p> {{ event.capacity - event.ticketCount }} spots
+              <p><samp :class="event.capacity == event.ticketCount ? 'text-danger' : ''">{{ event.capacity -
+                event.ticketCount
+              }}</samp> spots
                 left
               </p>
 
