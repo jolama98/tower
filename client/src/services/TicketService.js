@@ -26,13 +26,14 @@ class TicketService {
     AppState.accountEvents = eventGoersProfiles
   }
 
-  // deleteAlbumMember(accountEventId) {
-  //   const response = await api.delete(`api/collaborators/${accountEventId}`)
-  //   logger.log('💣👺📡', response.data)
-  //   const albumMemberIndexToRemove = AppState.accountAlbums.findIndex(aam => aam.id == albumMemberId)
-  //   AppState.accountAlbums.splice(albumMemberIndexToRemove, 1)
-  // }
-  // }
+
+  async deleteAlbumMember(accountEventId) {
+    const response = await api.delete(`api/tickets/${accountEventId}`)
+    logger.log('Tick, tick, BOOOMMMM', response.data)
+    const eventToRemove = AppState.accountEvents.findIndex(rte => rte.id == accountEventId)
+    AppState.accountEvents.splice(eventToRemove, 1)
+
+  }
 }
 
 

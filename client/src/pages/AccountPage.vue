@@ -21,21 +21,21 @@ async function getAccountEventTicket() {
     logger.error(error)
   }
 }
-async function deleteAlbumMember(accountEventId) {
+async function deleteAlbumMember(albumMemberId) {
   try {
-    const choice = await Pop.confirm("are you sure you", 'question')
+    const choice = await Pop.confirm("are you sure?", 'question')
     if (choice == false) {
-      Pop.toast("action canceled successfully 👺", 'info', 'center')
+      Pop.toast("action canceled successfully", 'info', 'center')
       return
     }
 
-    //   await ticketService.deleteAlbumMember(accountEventId)
-    //   Pop.success("Album Member Deleted!")
-    // } catch (error) {
-    //   Pop.toast("YOU MUST ATTEND", 'error')
-    //   logger.error(error)
-    // }
+    await ticketService.deleteAlbumMember(albumMemberId)
+    Pop.success("Album Member Deleted!")
+  } catch (error) {
+    Pop.toast("Cant let that happen", 'error')
+    logger.error(error)
   }
+}
 </script>
 
 <template>
@@ -59,8 +59,8 @@ async function deleteAlbumMember(accountEventId) {
               </div>
 
               <div class="d-flex justify-content-center">
-                <button @click="deleteAlbumMember(accountEvents.id)" class="btn btn-danger"> Stop Collaboration<i
-                    class="mdi mdi-delete-forever"></i></button>
+                <button @click="deleteAlbumMember(accountEvents.id)" class="btn btn-danger">No Longer Want to Go<i
+                    class="mdi mdi-delete-forever mdi-spin"></i></button>
               </div>
 
             </div>
