@@ -1,3 +1,4 @@
+import { commentsService } from "../services/CommentService.js";
 import { eventsService } from "../services/EventsService.js";
 import { ticketService } from "../services/TicketService.js";
 import BaseController from "../utils/BaseController.js";
@@ -9,6 +10,7 @@ export class EventsController extends BaseController {
     this.router
       .get('/:eventId', this.getEventById)
       .get('', this.getAllEvents)
+      .get('/:eventId/comments', this.getCommentsByEventId)
       .get('/:eventId/tickets', this.getEventByTicket)
       .use(Auth0Provider.getAuthorizedUserInfo)
       .post('', this.createEvent)
@@ -48,6 +50,28 @@ export class EventsController extends BaseController {
       next(error)
     }
   }
+
+  async getCommentsByEventId(request, response, next) {
+    try {
+      const eventId = request.params.eventId
+      const comments = await commentsService.getCommentsByEventId(eventId)
+      response.send(comments)
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  // async getAlbumPictures(request, response, next) {
+  //   try {
+  //     const albumId = request.params.albumId
+  //     const pictures = await picturesService.getAlbumPictures(albumId)
+  //     response.send(pictures)
+  //   } catch (error) {
+  //     next(error)
+  //   }
+  // }s
+
+
 
   async getEventById(request, response, next) {
     try {
