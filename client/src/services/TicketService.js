@@ -1,5 +1,5 @@
 import { AppState } from "../AppState.js";
-import { EventTicketHolderProfile } from "../models/EventGoer.js";
+import { EventTicketHolderProfile, AlbumMemberAlbum } from "../models/EventGoer.js";
 import { logger } from "../utils/Logger.js";
 import { api } from "./AxiosService.js";
 
@@ -7,26 +7,30 @@ class TicketService {
 
   async getTicket(eventData) {
     const response = await api.post('api/tickets', eventData)
-    logger.log(response.data)
     const newTicket = new EventTicketHolderProfile(response.data)
     AppState.eventTicketHolderProfiles.push(newTicket)
     AppState.activeEvent.ticketCount++
   }
 
-
-
   async getEventGoers(eventId) {
     const response = await api.get(`api/events/${eventId}/tickets`)
-    const eventGoersProfiles = response.data.map(eventGoersData => new EventTicketHolderProfile(eventGoersData))
-    AppState.eventTicketHolderProfiles = eventGoersProfiles
+    const getEventGoers = response.data.map(eventGoersData => new EventTicketHolderProfile(eventGoersData))
+    AppState.eventPictures = getEventGoers
   }
 
 
-  // async getAlbumMembersForAlbum(albumId) {
-  //   const response = await api.get(`api/albums/${albumId}/collaborators`)
-  //   logger.log('👺👺📡', response.data)
-  //   const albumMemberProfiles = response.data.map(albumMemberData => new AlbumMemberProfile(albumMemberData))
-  //   AppState.albumProfiles = albumMemberProfiles
+  async getAccountEventTicket() {
+    const response = await api.get('account/tickets')
+    logger.log('🎫 🎫 🎫 🎫 🎫', response.data)
+    const eventGoersProfiles = response.data.map(eventGoersData => new AlbumMemberAlbum(eventGoersData))
+    AppState.accountEvents = eventGoersProfiles
+  }
+
+  // async getAccountAlbumMemberAlbums() {
+  //   const response = await api.get('account/collaborators')
+  //   logger.log('👺🤠📡', response.data)
+  //   const albumMemberAlbums = response.data.map(albumMemberData => new AlbumMemberAlbum(albumMemberData))
+  //   AppState.accountAlbums = albumMemberAlbums
   // }
 }
 

@@ -150,12 +150,6 @@ async function getTicket() {
                 <div class="col-4" v-for="eventGoer in eventTicketHolderProfiles" :key="eventGoer.id">
                   <img class="pb-1 avatar" :src="eventGoer.profile.picture" alt="">
                 </div>
-
-                <!-- <div class="col-4" v-for="albumMember in albumMemberProfiles" :key="albumMember.id">
-              <img class="img-fluid"  :src="albumMember.profile.picture" alt="it's a face">
-            </div> -->
-
-
               </div>
             </div>
 
@@ -180,13 +174,6 @@ async function getTicket() {
 img {
   object-fit: cover;
   height: 40vh;
-}
-
-.avatar {
-  vertical-align: middle;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
 }
 </style>
 

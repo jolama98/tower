@@ -15,13 +15,12 @@ export const AppState = reactive({
   /** @type {Event} */
   activeEvent: null,
 
-
   /** @type {Picture[]} */
-  albumPictures: [],
+  eventPictures: [],
 
   /** @type {EventTicketHolderProfile[]} */
   eventTicketHolderProfiles: [],
 
-  /** @type {EventTicketHolderProfile[]} */
-  accountEvent: []
+  /** @type {AlbumMemberAlbum[]} */
+  accountEvents: []
 })
