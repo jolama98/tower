@@ -39,15 +39,6 @@ export class EventsController extends BaseController {
     }
   }
 
-  // async getAlbumPictures() {
-  //   try {
-  //     const albumId = request.params.albumId
-  //     const pictures = await picturesService.getAlbumPictures(albumId)
-  //     response.send(pictures)
-  //   } catch (error) {
-  //     next(error)
-  //   }
-  // }
 
   async getAllEvents(request, response, next) {
     try {

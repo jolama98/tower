@@ -21,9 +21,21 @@ async function getAccountEventTicket() {
     logger.error(error)
   }
 }
-function deleteAlbumMember(accountEventId) {
+async function deleteAlbumMember(accountEventId) {
+  try {
+    const choice = await Pop.confirm("are you sure you", 'question')
+    if (choice == false) {
+      Pop.toast("action canceled successfully 👺", 'info', 'center')
+      return
+    }
 
-}
+    //   await ticketService.deleteAlbumMember(accountEventId)
+    //   Pop.success("Album Member Deleted!")
+    // } catch (error) {
+    //   Pop.toast("YOU MUST ATTEND", 'error')
+    //   logger.error(error)
+    // }
+  }
 </script>
 
 <template>
