@@ -8,6 +8,7 @@ export class CommentsController extends BaseController {
     this.router
       .use(Auth0Provider.getAuthorizedUserInfo)
       .post('', this.createComments)
+      .delete('/:commentId', this.deleteComment)
   }
 
   async createComments(request, response, next) {
@@ -22,4 +23,25 @@ export class CommentsController extends BaseController {
     }
   }
 
+  async deleteComment(request, response, next) {
+    try {
+      const user = request.userInfo
+      const commentId = request.params.commentId
+      const message = await commentsService.deleteComment(commentId, user.id)
+      response.send(message)
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  // async archiveAlbumById(request, response, next) {
+  //   try {
+  //     const user = request.userInfo
+  //     const albumId = request.params.albumId
+  //     const message = await albumsService.archiveAlbumById(albumId, user.id)
+  //     response.send(message)
+  //   } catch (error) {
+  //     next(error)
+  //   }
+  // }
 }

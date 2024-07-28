@@ -16,6 +16,7 @@ export class EventsController extends BaseController {
       .post('', this.createEvent)
       .put('/:eventId', this.editEvent)
       .delete('/:eventId', this.cancelEvent)
+
   }
 
   async createEvent(request, response, next) {
@@ -41,7 +42,6 @@ export class EventsController extends BaseController {
     }
   }
 
-
   async getAllEvents(request, response, next) {
     try {
       const events = await eventsService.getAllEvents()
@@ -60,18 +60,6 @@ export class EventsController extends BaseController {
       next(error)
     }
   }
-
-  // async getAlbumPictures(request, response, next) {
-  //   try {
-  //     const albumId = request.params.albumId
-  //     const pictures = await picturesService.getAlbumPictures(albumId)
-  //     response.send(pictures)
-  //   } catch (error) {
-  //     next(error)
-  //   }
-  // }s
-
-
 
   async getEventById(request, response, next) {
     try {
@@ -105,7 +93,6 @@ export class EventsController extends BaseController {
       next(error)
     }
   }
-
 
   async cancelEvent(request, response, next) {
     try {
