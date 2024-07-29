@@ -15,7 +15,7 @@ class TicketService {
   async getEventGoers(eventId) {
     const response = await api.get(`api/events/${eventId}/tickets`)
     const getEventGoers = response.data.map(eventGoersData => new EventTicketHolderProfile(eventGoersData))
-    AppState.eventPictures = getEventGoers
+    AppState.eventTicketHolderProfiles = getEventGoers
   }
 
 

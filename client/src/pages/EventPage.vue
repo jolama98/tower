@@ -198,9 +198,9 @@ async function deleteComment(commentId) {
                 <div v-for="comment in  eventPictures " :key="comment.id" class="card mb-3">
 
                   <div class="d-flex">
-                    <img :src="account.picture" class="m-1 comment-img" :title="`posted by ${comment.creator}`">
+                    <img :src="comment.creator.picture" class="m-1 comment-img" :title="`posted by ${comment.creator}`">
                     <div class="p-2">
-                      <p><span class="fw-bold">{{ account.name }}</span></p>
+                      <p><span class="fw-bold">{{ comment.creator.name }}</span></p>
 
                       <p>{{ comment.body }}</p>
                     </div>
