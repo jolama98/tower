@@ -136,23 +136,6 @@ async function deleteComment(commentId) {
   }
 }
 
-
-// async function deleteAlbumMember(albumMemberId) {
-//   try {
-//     const choice = await Pop.confirm("are you sure?", 'question')
-//     if (choice == false) {
-//       Pop.toast("action canceled successfully", 'info', 'center')
-//       return
-//     }
-
-//     await ticketService.deleteAlbumMember(albumMemberId)
-//     Pop.success("Album Member Deleted!")
-//   } catch (error) {
-//     Pop.toast("Cant let that happen", 'error')
-//     logger.error(error)
-//   }
-// }
-
 </script>
 
 <template>
