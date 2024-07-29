@@ -7,10 +7,14 @@ import Pop from '../utils/Pop.js';
 import { ticketService } from '../services/TicketService.js'
 import { eventsService } from '../services/EventsService.js';
 import { logger } from '../utils/Logger.js';
-import { TicketEvent } from '../models/EventGoer.js';
+import { commentService } from '../services/CommentService.js';
+import { ref } from 'vue';
+// import { TicketEvent } from '../models/EventGoer.js';
 
 const route = useRoute()
-const account = computed(() => AppState.account)
+
+const account = computed(() => AppState.identity)
+const eventPictures = computed(() => AppState.eventPictures)
 const event = computed(() => AppState.activeEvent)
 const eventTicketHolderProfiles = computed(() => AppState.eventTicketHolderProfiles)
 
@@ -21,18 +25,25 @@ const eventGoerProfile = computed(() => AppState.eventTicketHolderProfiles.find(
 
 // TODO reference isAlbumMember from postIt to see if you are attending the event
 
-defineProps({ event: Event })
+defineProps({ events: Event })
 
 onMounted(() => {
   getEventById()
   getEventGoers()
+  getComments()
+})
+
+const commentData = ref({
+  body: '',
+  eventId: route.params.eventId
 })
 
 async function cancelEvent(eventId) {
   try {
     const whatIPicked = await Pop.confirm("???")
     if (whatIPicked == false) {
-      Pop.toast("action canceled successfully 👺", 'info', 'center')
+      Pop.toast("action canceled successfully ", 'info', 'center')
+
       return
     }
     await eventsService.cancelEvent(eventId)
@@ -72,6 +83,76 @@ async function getTicket() {
     logger.error(error)
   }
 }
+
+async function createComments() {
+  try {
+    await commentService.createComment(commentData.value)
+    Pop.success('Comment created successfully')
+    resetForm()
+  } catch (error) {
+    Pop.error(error)
+  }
+}
+
+
+async function getComments() {
+  try {
+    await commentService.getEventComments(route.params.eventId)
+  } catch (error) {
+    logger.error(error)
+  }
+}
+// async function getAlbumPictures() {
+//   try {
+//     await picturesService.getAlbumPictures(route.params.albumId)
+//   } catch (error) {
+//     Pop.toast("Could not get album pictures 👺", 'error', 'bottom')
+//     logger.error(error)
+//   }
+// }
+
+function resetForm() {
+  commentData.value = {
+    body: '',
+    eventId: route.params.eventId
+  }
+}
+
+
+async function deleteComment(commentId) {
+  try {
+    const choice = await Pop.confirm("are you sure?", 'question')
+    if (choice == false) {
+      Pop.toast("action canceled successfully", 'info', 'center')
+      return
+    }
+
+
+    await commentService.deleteComment(commentId)
+    Pop.success("Comment Deleted!")
+
+  } catch (error) {
+    logger.error(error)
+  }
+}
+
+
+// async function deleteAlbumMember(albumMemberId) {
+//   try {
+//     const choice = await Pop.confirm("are you sure?", 'question')
+//     if (choice == false) {
+//       Pop.toast("action canceled successfully", 'info', 'center')
+//       return
+//     }
+
+//     await ticketService.deleteAlbumMember(albumMemberId)
+//     Pop.success("Album Member Deleted!")
+//   } catch (error) {
+//     Pop.toast("Cant let that happen", 'error')
+//     logger.error(error)
+//   }
+// }
+
 </script>
 
 <template>
@@ -102,7 +183,7 @@ async function getTicket() {
           <div class="col-md-7 p-4">
             <div class="card w-75 mb-3">
               <div class="d-flex justify-content-end">
-                <button v-if="account?.id == event.creatorId" role="button" class="m-1 btn btn-outline-secondary"
+                <button v-if="account?.name == event.creatorId" role="button" class="m-1 btn btn-outline-secondary"
                   data-bs-toggle="modal" data-bs-target="#exampleModal">
                   ...
                 </button>
@@ -120,6 +201,33 @@ async function getTicket() {
                   <p> <i class="mdi mdi-map-marker"></i>{{ event.location }}</p>
                 </div>
               </div>
+            </div>
+            <div class="input-group">
+              <span class="input-group-text">Comments</span>
+              <form @submit.prevent="createComments()">
+                <textarea v-model="commentData.body" class="form-control" aria-label="With textarea" required
+                  maxlength="300"></textarea>
+                <button class="btn btn-primary"><i class="mdi mdi-plus"></i>Submit</button>
+              </form>
+            </div>
+            <div class="col-md-9">
+              <section>
+                <div v-for="comment in  eventPictures " :key="comment.id" class="card mb-3">
+
+                  <div class="d-flex">
+                    <img :src="account.picture" class="m-1 comment-img" :title="`posted by ${comment.creator}`">
+                    <div class="p-2">
+                      <p><span class="fw-bold">{{ account.name }}</span></p>
+
+                      <p>{{ comment.body }}</p>
+                    </div>
+                  </div>
+                  <div class="p-2 d-flex justify-content-end">
+                    <button @click="deleteComment(comment.id)" class=" btn btn-danger"><i
+                        class="mdi mdi-delete-forever mdi-spin"></i></button>
+                  </div>
+                </div>
+              </section>
             </div>
           </div>
           <div class="col-md-4 p-4">
@@ -146,9 +254,9 @@ async function getTicket() {
             <div class=" card mb-3 ">
               <div class=" card-body">
                 <p class="fs-4 fw-bold">Attendees</p>
-
-                <div class="col-4" v-for="eventGoer in eventTicketHolderProfiles" :key="eventGoer.id">
+                <div class="col-4 " v-for=" eventGoer  in  eventTicketHolderProfiles " :key="eventGoer.id">
                   <img class="pb-1 avatar" :src="eventGoer.profile.picture" alt="">
+                  <p>{{ eventGoer.profile.name }}</p>
                 </div>
               </div>
             </div>
@@ -165,6 +273,13 @@ async function getTicket() {
 
 <style lang="scss" scoped>
 .avatar {
+  vertical-align: middle;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.comment-img {
   vertical-align: middle;
   width: 50px;
   height: 50px;

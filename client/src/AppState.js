@@ -1,7 +1,8 @@
 import { reactive } from 'vue'
 import { Event } from './models/Event.js'
-import { TicketEvent, EventTicketHolderProfile, AlbumMemberAlbum } from './models/EventGoer.js'
+import { EventTicketHolderProfile, AlbumMemberAlbum } from './models/EventGoer.js'
 import { Picture } from './models/Picture.js'
+
 
 // NOTE AppState is a reactive object to contain app level data
 export const AppState = reactive({
