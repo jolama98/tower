@@ -39,10 +39,10 @@ async function getAllEvents() {
 <template>
   <div class="container-fluid">
     <section class="row pb-3">
-      <div class="col-12 header-img">
-        <div class="text-light">
-          <p class="">Event management for people, by people</p>
-          <p class="">Lorem ipsum dolor sit amet consectetur adipisicing elit. Error illo dolores, excepturi vero
+      <div class="col-12 header-img d-flex align-items-end">
+        <div class="text-light ">
+          <p class="shadow-lg ">Event management for people, by people</p>
+          <p class="shadow-lg">Lorem ipsum dolor sit amet consectetur adipisicing elit. Error illo dolores, excepturi vero
             accusamus ab vel, asperiores animi deleniti odio inventore adipisci, quaerat ratione ex ipsam dolore
             repellendus aut ullam.</p>
         </div>
@@ -61,25 +61,22 @@ async function getAllEvents() {
           <div class="col-md-4">
             <div role="button" class="card d-flex justify-content-center">
               <div class=" card-body">
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                  Add event
-                </button>
+
                 <h5 class="card-title">Start an event to invite your friends</h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                  card's
-                  content.</p>
+                <p class="card-text">Create your own Tower event, and draw from a community of millions</p>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                  Create an event
+                </button>
               </div>
             </div>
           </div>
           <div class="col-md-4">
             <div class="card d-flex justify-content-center">
+
               <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-                  content.</p>
-                <a href="#" class="card-link">Card link</a>
-
+                <i class="fs-1 mdi mdi-search-web mdi-spin"></i>
+                <h5 class="card-title">Discover events your'er interested in</h5>
+                <p class="card-text">Browse though community hosted events for all the things you love</p>
               </div>
             </div>
           </div>

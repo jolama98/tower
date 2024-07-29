@@ -22,7 +22,6 @@ const eventGoerProfile = computed(() => AppState.eventTicketHolderProfiles.find(
 
 // const isAMember = computed(() => AppState.albumProfiles.find(amp => amp.accountId == AppState.account.id))
 
-
 // TODO reference isAlbumMember from postIt to see if you are attending the event
 
 defineProps({ events: Event })
@@ -161,6 +160,11 @@ async function deleteComment(commentId) {
       <div>
         <p v-if="event.isCanceled" class="text-dark bg-danger-subtle d-flex  justify-content-center fs-2">Canceled!</p>
       </div>
+      <div v-if="eventGoerProfile" class="col-12 d-flex  justify-content-center fs-2 text-info fw-bold">You have a ticket!
+      </div>
+      <div class="col-7">
+
+      </div>
       <section>
         <div class="row">
           <div class="col-md-7 p-4">
@@ -206,8 +210,8 @@ async function deleteComment(commentId) {
                     </div>
                   </div>
                   <div class="p-2 d-flex justify-content-end">
-                    <button @click="deleteComment(comment.id)" class=" btn btn-danger"><i
-                        class="mdi mdi-delete-forever mdi-spin"></i></button>
+                    <button v-if="account?.id == comment.creator.id" @click="deleteComment(comment.id)"
+                      class=" btn btn-danger"><i class="mdi mdi-delete-forever mdi-spin"></i></button>
                   </div>
                 </div>
               </section>

@@ -12,14 +12,14 @@ class TicketService {
     return ticketEvent
   }
 
-  async getTicketByEventId(accountId) {
-    const eventTicket = await dbContext.Ticket.find({ accountId }).populate('event')
-    return eventTicket
-  }
-
   async getEventTickets(eventId) {
     const tickets = await dbContext.Ticket.find({ eventId: eventId }).populate('profile')
     return tickets
+  }
+
+  async getTicketByEventId(accountId) {
+    const eventTicket = await dbContext.Ticket.find({ accountId }).populate('event')
+    return eventTicket
   }
 
   async deleteEventTicket(eventTicketId, userId) {
