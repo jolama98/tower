@@ -8,7 +8,7 @@ export class Event {
     this.description = data.description || 'Lame description'
     this.coverImg = data.coverImg
     this.location = data.location
-    this.startDate = data.startDate
+    this.startDate = new Date(data.startDate)
     this.isCanceled = data.isCanceled
     this.capacity = data.capacity
     this.type = data.type

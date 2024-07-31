@@ -39,12 +39,10 @@ async function getAllEvents() {
 <template>
   <div class="container-fluid">
     <section class="row pb-3">
-      <div class="col-12 header-img d-flex align-items-end">
+      <div class="col-12 header-img d-flex justify-content-center">
         <div class="text-light ">
-          <p class="shadow-lg ">Event management for people, by people</p>
-          <p class="shadow-lg">Lorem ipsum dolor sit amet consectetur adipisicing elit. Error illo dolores, excepturi vero
-            accusamus ab vel, asperiores animi deleniti odio inventore adipisci, quaerat ratione ex ipsam dolore
-            repellendus aut ullam.</p>
+          <p class="display-1 header-text ">Event management for people, by people</p>
+
         </div>
       </div>
     </section>
@@ -120,5 +118,13 @@ async function getAllEvents() {
   background-image: url('https://plus.unsplash.com/premium_photo-1664474653221-8412b8dfca3e?q=80&w=2669&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
   background-size: cover;
   background-position: center;
+}
+
+.header-text {
+  text-shadow: 1px 1px 2px rgb(126, 3, 3), 0 0 1em blue, 0 0 0.2em rgb(135, 135, 165);
+
+  font-family: "Prompt", sans-serif;
+  font-weight: 700;
+  font-style: normal;
 }
 </style>

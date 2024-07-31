@@ -49,7 +49,7 @@ async function deleteAlbumMember(albumMemberId) {
         <section class="row g-3">
 
 
-          <div v-for="accountEvents in  accountEvent " :key="accountEvents.id" class="col-md-3">
+          <div v-for="accountEvents in accountEvent " :key="accountEvents.id" class="col-md-3">
             <div class="card d-flex justify-content-center">
               <div>
                 <img :src="accountEvents.event.coverImg" class="card-img" alt="">
@@ -60,7 +60,7 @@ async function deleteAlbumMember(albumMemberId) {
 
               <div class="d-flex justify-content-center">
                 <button @click="deleteAlbumMember(accountEvents.id)" class="btn btn-danger">No Longer Want to Go<i
-                    class="mdi mdi-delete-forever mdi-spin"></i></button>
+                    class="fs-2 mdi mdi-delete-forever"></i></button>
               </div>
 
             </div>

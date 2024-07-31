@@ -13,7 +13,7 @@ import { ref } from 'vue';
 
 const route = useRoute()
 
-const account = computed(() => AppState.identity)
+const account = computed(() => AppState.account)
 const eventPictures = computed(() => AppState.eventPictures)
 const event = computed(() => AppState.activeEvent)
 const eventTicketHolderProfiles = computed(() => AppState.eventTicketHolderProfiles)
@@ -101,14 +101,6 @@ async function getComments() {
     logger.error(error)
   }
 }
-// async function getAlbumPictures() {
-//   try {
-//     await picturesService.getAlbumPictures(route.params.albumId)
-//   } catch (error) {
-//     Pop.toast("Could not get album pictures 👺", 'error', 'bottom')
-//     logger.error(error)
-//   }
-// }
 
 function resetForm() {
   commentData.value = {
@@ -120,7 +112,7 @@ function resetForm() {
 
 async function deleteComment(commentId) {
   try {
-    const choice = await Pop.confirm("are you sure?", 'question')
+    const choice = await Pop.confirm("are you sure?", 'delete comment')
     if (choice == false) {
       Pop.toast("action canceled successfully", 'info', 'center')
       return
@@ -138,122 +130,129 @@ async function deleteComment(commentId) {
 </script>
 
 <template>
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">Cancel Event? </h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body d-flex justify-content-around">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button :disabled="event?.isCanceled" @click="cancelEvent(event.id)" type="button" data-bs-dismiss="modal"
-            class="btn btn-primary">Cancel
-            Event</button>
+  <div class="body">
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Cancel Event? </h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body d-flex justify-content-around">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button :disabled="event?.isCanceled" @click="cancelEvent(event.id)" type="button" data-bs-dismiss="modal"
+              class="btn btn-primary">Cancel
+              Event</button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="container-fluid">
-    <section v-if="event" class="row p-4  ">
-      <img :src="event.coverImg" class="img-fluid" alt="">
-      <div>
-        <p v-if="event.isCanceled" class="text-dark bg-danger-subtle d-flex  justify-content-center fs-2">Canceled!</p>
-      </div>
-      <div v-if="eventGoerProfile" class="col-12 d-flex  justify-content-center fs-2 text-info fw-bold">You have a ticket!
-      </div>
-      <div class="col-7">
-
-      </div>
-      <section>
-        <div class="row">
-          <div class="col-md-7 p-4">
-            <div class="card w-75 mb-3">
-              <div class="d-flex justify-content-end">
-                <button v-if="account?.name == event.creatorId" role="button" class="m-1 btn btn-outline-secondary"
-                  data-bs-toggle="modal" data-bs-target="#exampleModal">
-                  ...
-                </button>
-              </div>
-              <div class="card-body">
-                <p class="fs-2">{{ event.name }}</p>
-                <p>{{ event.type }}</p>
-                <p>{{ event.description }}</p>
-                <div>
-                  <p class="fs-4 fw-bold">Date and Time</p>
-                  <p><i class="mdi mdi-calendar"></i>{{ event.startDate }}</p>
-                </div>
-                <div>
-                  <p class="fs-4 fw-bold">Location</p>
-                  <p> <i class="mdi mdi-map-marker"></i>{{ event.location }}</p>
-                </div>
-              </div>
-            </div>
-            <div class="input-group">
-              <span class="input-group-text">Comments</span>
-              <form @submit.prevent="createComments()">
-                <textarea v-model="commentData.body" class="form-control" aria-label="With textarea" required
-                  maxlength="300"></textarea>
-                <button class="btn btn-primary"><i class="mdi mdi-plus"></i>Submit</button>
-              </form>
-            </div>
-            <div class="col-md-9">
-              <section>
-                <div v-for="comment in  eventPictures " :key="comment.id" class="card mb-3">
-
-                  <div class="d-flex">
-                    <img :src="comment.creator.picture" class="m-1 comment-img" :title="`posted by ${comment.creator}`">
-                    <div class="p-2">
-                      <p><span class="fw-bold">{{ comment.creator.name }}</span></p>
-
-                      <p>{{ comment.body }}</p>
-                    </div>
-                  </div>
-                  <div class="p-2 d-flex justify-content-end">
-                    <button v-if="account?.id == comment.creator.id" @click="deleteComment(comment.id)"
-                      class=" btn btn-danger"><i class="mdi mdi-delete-forever mdi-spin"></i></button>
-                  </div>
-                </div>
-              </section>
-            </div>
-          </div>
-          <div class="col-md-4 p-4">
-            <div class="card mb-3 text-center">
-              <div class="card-body">
-                <p class="fs-4 fw-bold">Interested in going?</p>
-                <p>Grab a ticket!</p>
-                <div>
-                  <button :disabled="event.capacity == event.ticketCount" @click="getTicket()" class="btn btn-primary"
-                    v-show="event.capacity != event.ticketCount">Get A Ticket!</button>
-                  <button :disabled="event.capacity == event.ticketCount" class=" btn btn-subtle"
-                    v-show="event.capacity == event.ticketCount">Sold Out</button>
-                </div>
-              </div>
-            </div>
-            <div class="d-flex justify-content-end pb-5 mb-3">
-              <p><samp :class="event.capacity == event.ticketCount ? 'text-danger' : ''">{{ event.capacity -
-                event.ticketCount
-              }}</samp> spots
-                left
-              </p>
-            </div>
-
-            <div class=" card mb-3 ">
-              <div class=" card-body">
-                <p class="fs-4 fw-bold">Attendees</p>
-                <div class="col-4 " v-for=" eventGoer  in  eventTicketHolderProfiles " :key="eventGoer.id">
-                  <img class="pb-1 avatar" :src="eventGoer.profile.picture" alt="">
-                  <p>{{ eventGoer.profile.name }}</p>
-                </div>
-              </div>
-            </div>
-
-          </div>
+    <div class="container-fluid">
+      <section v-if="event" class="row p-4  ">
+        <img :src="event.coverImg" class="img-fluid" alt="">
+        <div>
+          <p v-if="event.isCanceled" class="text-dark bg-danger-subtle d-flex  justify-content-center fs-2">Canceled!
+          </p>
+        </div>
+        <div v-if="eventGoerProfile" class="col-12 d-flex  justify-content-center fs-2 text-info fw-bold">You have a
+          ticket!
+        </div>
+        <div class="col-7">
 
         </div>
-      </section>
+        <section>
+          <div class="row">
+            <div class="col-md-7 p-4">
+              <div class="card w-75 mb-3">
+                <div class="d-flex justify-content-end">
+                  <button v-if="account?.id == event.creatorId" role="button" class="m-1 btn btn-outline-secondary"
+                    data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    ...
+                  </button>
+                </div>
+                <div class="card-body">
+                  <p class="fs-2">{{ event.name }}</p>
+                  <p>{{ event.type }}</p>
+                  <p>{{ event.description }}</p>
+                  <div>
+                    <p class="fs-4 fw-bold">Date and Time</p>
+                    <p><i class="mdi mdi-calendar"></i> {{ event.startDate.toLocaleDateString() }}</p>
+                  </div>
+                  <div>
+                    <p class="fs-4 fw-bold">Location</p>
+                    <p> <i class="mdi mdi-map-marker"></i>{{ event.location }}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="d-flex input-group mb-3">
+                <span class="input-group-text">Comments</span>
+                <form @submit.prevent="createComments()">
+                  <input v-model="commentData.body" class="form-control" required minlength="2" maxlength="100">
+                  <button class="btn btn-primary">post</button>
+                </form>
+              </div>
+              <div class="col-md-9">
+                <section>
+                  <div v-for="comment in eventPictures " :key="comment.id" class="card mb-3">
 
-    </section>
+                    <div class="d-flex">
+                      <img :src="comment.creator.picture" class="m-2 comment-img"
+                        :title="`posted by ${comment.creator}`">
+                      <div class="p-2">
+                        <p><span class="fw-bold">{{ comment.creator.name }}</span></p>
+
+                        <p class="fs-4">{{ comment.body }}</p>
+                      </div>
+                    </div>
+                    <div class="p-2 d-flex justify-content-end">
+                      <button v-if="account?.id == comment.creator.id" @click="deleteComment(comment.id)"
+                        class=" btn btn-danger"><i class="fs-3 mdi mdi-delete-forever">Delete</i></button>
+                    </div>
+                  </div>
+                </section>
+              </div>
+            </div>
+            <div class="col-md-4 p-4">
+              <div class="card mb-3 text-center">
+                <div class="card-body">
+                  <p class="fs-4 fw-bold">Interested in going?</p>
+                  <p>Grab a ticket!</p>
+                  <div>
+                    <div v-if="event.isCanceled != true">
+
+                      <button :disabled="event.capacity == event.ticketCount" @click="getTicket()"
+                        class="btn btn-primary" v-show="event.capacity != event.ticketCount">Get A Ticket!</button>
+                    </div>
+                    <button :disabled="event.capacity == event.ticketCount" class=" btn btn-subtle"
+                      v-show="event.capacity == event.ticketCount">Sold Out</button>
+                  </div>
+                </div>
+              </div>
+              <div class="d-flex justify-content-end pb-5 mb-3">
+                <p><samp :class="event.capacity == event.ticketCount ? 'text-danger' : ''">{{ event.capacity -
+                  event.ticketCount
+                    }}</samp> spots
+                  left
+                </p>
+              </div>
+
+              <div class=" card mb-3 ">
+                <div class=" card-body">
+                  <p class="fs-4 fw-bold">Attendees</p>
+                  <div class="col-4 " v-for=" eventGoer in eventTicketHolderProfiles " :key="eventGoer.id">
+                    <img class="pb-1 avatar" :src="eventGoer.profile.picture" alt="">
+                    <p>{{ eventGoer.profile.name }}</p>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </section>
+
+      </section>
+    </div>
   </div>
 </template>
 
@@ -276,6 +275,24 @@ async function deleteComment(commentId) {
 img {
   object-fit: cover;
   height: 40vh;
+
+}
+
+.body {
+  animation-duration: 2s;
+  animation-name: slidein;
+
+}
+
+@keyframes slidein {
+  from {
+    translate: 150vw 0;
+    scale: 10% 1;
+  }
+
+  to {
+    translate: 0 0;
+    scale: 100% 1;
+  }
 }
 </style>
-
