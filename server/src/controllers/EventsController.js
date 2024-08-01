@@ -8,8 +8,8 @@ export class EventsController extends BaseController {
   constructor() {
     super('api/events')
     this.router
-      .get('/:eventId', this.getEventById)
       .get('', this.getAllEvents)
+      .get('/:eventId', this.getEventById)
       .get('/:eventId/comments', this.getCommentsByEventId)
       .get('/:eventId/tickets', this.getEventByTicket)
       .use(Auth0Provider.getAuthorizedUserInfo)
@@ -44,6 +44,7 @@ export class EventsController extends BaseController {
 
   async getAllEvents(request, response, next) {
     try {
+
       const events = await eventsService.getAllEvents()
       response.send(events)
     } catch (error) {
