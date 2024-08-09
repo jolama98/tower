@@ -18,7 +18,7 @@ function toggleTheme() {
 </script>
 
 <template>
-  <nav class="navbar navbar-expand-sm navbar-dark bg-info px-3">
+  <nav class="navbar navbar-expand-sm navbar-dark nav-link px-3">
     <router-link class="navbar-brand d-flex" :to="{ name: 'Home' }">
       <div class="d-flex flex-column align-items-center">
         <i class="mdi mdi-chess-rook"> Home</i>
@@ -53,12 +53,14 @@ a:hover {
 
 .nav-link {
   text-transform: uppercase;
+  background-color: #ff6700;
 }
 
 .navbar-nav .router-link-exact-active {
   border-bottom: 2px solid var(--bs-success);
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
+
 }
 
 @media screen and (min-width: 576px) {

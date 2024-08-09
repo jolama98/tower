@@ -275,24 +275,23 @@ async function deleteComment(commentId) {
 img {
   object-fit: cover;
   height: 40vh;
+  border-radius: 3%;
 
 }
 
 .body {
-  animation-duration: 2s;
-  animation-name: slidein;
-
+  background-image: linear-gradient(to top,
+      #022d54, #17a2b8);
 }
 
-@keyframes slidein {
-  from {
-    translate: 150vw 0;
-    scale: 10% 1;
-  }
-
-  to {
-    translate: 0 0;
-    scale: 100% 1;
-  }
+.card-body {
+  background-image: linear-gradient(to top, #066ac9, #17a2b8);
 }
 </style>
+
+
+<!-- #ffffff (255,255,255)
+  #ffd7b5 (255,215,181)
+  #ffb38a (255,179,138)
+  #ff9248 (255,146,72)
+  #ff6700 (255,103,0)-->

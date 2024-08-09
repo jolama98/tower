@@ -12,7 +12,7 @@ import Navbar from './components/Navbar.vue'
   <main>
     <router-view />
   </main>
-  <footer class="bg-info-subtle">
+  <footer class="cream">
 
   </footer>
 </template>
@@ -29,5 +29,6 @@ footer {
   display: grid;
   place-content: center;
   height: 32px;
+
 }
 </style>
